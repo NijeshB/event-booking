@@ -1,0 +1,7 @@
+.env
+node_modules/
+old/*
+admin/.env
+admin/node_modules/
+admin/dist/
+admin/*.log
