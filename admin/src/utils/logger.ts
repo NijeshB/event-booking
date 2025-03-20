@@ -1,4 +1,3 @@
-import { stack } from "sequelize/types/utils";
 import winston from "winston";
 
 const { combine, timestamp, printf, json, prettyPrint, errors } =

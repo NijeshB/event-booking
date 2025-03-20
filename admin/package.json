@@ -8,14 +8,23 @@
     "start": "node dist/server.js",
     "start1": "nodemon --config nodemon.json tsc ./dist/server.js",
     "predev": "npm run build",
-    "dev": "nodemon",
+    "dev1": "nodemon",
+    "dev": "nodemon -r tsconfig-paths/register -r ts-node/register src/server.ts",
+    "migration:create": "npx sequelize-cli migration:generate",
+    "migrate": "npx sequelize-cli db:migrate",
+    "migrate:rollback": "npx sequelize-cli db:migrate:undo",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "prisma1": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "keywords": [],
   "author": "NJ",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "^6.5.0",
     "bcryptjs": "^3.0.2",
+    "body-parser": "^1.20.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
@@ -23,17 +32,20 @@
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
     "mysql2": "^3.13.0",
-    "sequelize": "^6.37.6",
-    "typeorm": "^0.3.21",
-    "winston": "^3.17.0"
+    "prisma-client": "^0.0.0",
+    "reflect-metadata": "^0.2.2",
+    "tsconfig-paths": "^4.2.0",
+    "winston": "^3.17.0",
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@types/dotenv": "^8.2.3",
     "@types/express": "^5.0.0",
     "@types/node": "^22.13.10",
-    "@types/sequelize": "^4.28.20",
     "nodemon": "^3.1.9",
+    "prisma": "^6.5.0",
     "ts-node": "^10.9.2",
+    "tsx": "^4.19.3",
     "typescript": "^5.8.2"
   }
 }
