@@ -1,5 +1,5 @@
-import { PrismaClient } from "@prisma/client";
-import logger from "utils/logger";
+import { PrismaClient } from '@prisma/client';
+import logger from 'utils/logger';
 const prismaClient = new PrismaClient();
 
 // async function main() {
