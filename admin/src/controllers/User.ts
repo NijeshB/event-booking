@@ -6,36 +6,31 @@ import logger from '@utils/logger';
 import z from 'zod';
 import {
   createUserSchema,
+  typeCreateUser,
   emailSchema,
   typeUserProfile,
+  mobileSchema,
 } from '@validators/userValidator';
 import { asyncHandler } from '@utils/errorHandler';
 import { ConflictError, NotFoundException } from 'exceptions/customException';
+import { log } from 'console';
 
 export const getUsers = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const users = await prismaClient.user.findMany();
-      res.status(200).json({
-        status: 'success',
-        data: {
-          users,
-        },
-      });
-    } catch (e) {
-      logger.error('Error in Fetching User List', e);
-      res.status(500).json({
-        status: 'error',
-        message: 'Unable to retrieve data. Please try again later!',
-      });
-    }
+    const users = await prismaClient.user.findMany();
+    res.status(200).json({
+      status: 'success',
+      data: {
+        users,
+      },
+    });
   },
 );
 
 export const createUsers = asyncHandler(async (req: Request, res: Response) => {
-  createUserSchema.parse(req.body);
-  const { email, mobile, name, password } = req.body;
-  const mobileString = String(mobile);
+  const validatedData = createUserSchema.parse(req.body);
+
+  const { email, mobile } = validatedData;
 
   const userEmailExists = await prismaClient.user.findFirst({
     where: {
@@ -49,7 +44,7 @@ export const createUsers = asyncHandler(async (req: Request, res: Response) => {
 
   const userMobileExists = await prismaClient.user.findFirst({
     where: {
-      mobile: mobileString,
+      mobile,
     },
   });
 
@@ -58,20 +53,13 @@ export const createUsers = asyncHandler(async (req: Request, res: Response) => {
   }
 
   const user = await prismaClient.user.create({
-    data: {
-      email,
-      name,
-      mobile: mobileString,
-      password,
-    },
+    data: validatedData,
   });
-
-  const safeUser: typeUserProfile = omit(user, ['password']) as typeUserProfile;
 
   res.status(200).json({
     status: 'success',
     data: {
-      user: safeUser,
+      user: getSafeUser(user),
     },
   });
 });
@@ -125,6 +113,28 @@ export const deleteUserByEmail = asyncHandler(
   },
 );
 
+export const deleteUserByMobile = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { mobile } = mobileSchema.parse(req.body);
+    const user = await prismaClient.user.findFirst({
+      where: {
+        mobile,
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundException('Given Mobile Number does not exists!');
+    }
+
+    await prismaClient.user.delete({
+      where: {
+        mobile,
+      },
+    });
+
+    res.status(204).send();
+  },
+);
 const getSafeUser = (user: User) => {
   return omit(user, ['password', 'role']);
 };

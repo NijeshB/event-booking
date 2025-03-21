@@ -20,6 +20,14 @@ export const emailSchema = z
   .email({
     message: 'Invalid email format. Please enter a valid email address!',
   });
+
+export const mobileSchema = z.object({
+  mobile: z.coerce
+    .string()
+    .length(10, { message: 'Mobile number must be exactly 10 digits.' })
+    .regex(/^\d{10}$/, { message: 'Mobile number must contain only digits.' }),
+});
+
 // Custom function to validate password strength
 const isStrongPassword = (password: string): boolean => {
   const hasUpperCase = /[A-Z]/.test(password);

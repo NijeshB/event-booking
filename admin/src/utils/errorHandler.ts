@@ -30,10 +30,10 @@ export const errorHandler = (
     message = 'Validation Error';
   }
 
-  logger.info(`Is Zod Error::: ${error instanceof z.ZodError}`);
-  logger.info(`Is Error::: ${error}`);
-  // const parentClass = Object.getPrototypeOf(error).constructor.name;
-  console.log(`Instance:: ${error instanceof HttpException}`); // "CustomError"
+  // logger.info(`Is Zod Error::: ${error instanceof z.ZodError}`);
+  // logger.info(`Is Error::: ${error.message}`);
+  // // const parentClass = Object.getPrototypeOf(error).constructor.name;
+  // console.log(`Instance:: ${error instanceof HttpException}`); // "CustomError"
 
   res.status(statusCode).json({
     status: 'error',
