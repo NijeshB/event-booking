@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import logger from "utils/logger";
-const prisma = new PrismaClient();
+const prismaClient = new PrismaClient();
 
 // async function main() {
 //   const user = await prisma.user.create({
@@ -22,4 +22,4 @@ const prisma = new PrismaClient();
 //     await prisma.$disconnect();
 //   });
 
-export default prisma;
+export default prismaClient;

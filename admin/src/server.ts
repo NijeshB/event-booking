@@ -5,6 +5,7 @@ import path from "path";
 import bodyParser from "body-parser";
 import logger from "@utils/logger";
 import userRoutes from "./routes/userRoutes";
+import { errorHandler } from "@utils/errorHandler";
 
 dotenv.config({ path: path.resolve(__dirname, ".env") });
 
@@ -17,6 +18,8 @@ app.get("/", (req: express.Request, res: express.Response) => {
 });
 
 app.use("/users", userRoutes);
+
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => logger.info(`🚀 Server running on port: ${PORT}`));
