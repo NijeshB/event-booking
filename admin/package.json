@@ -1,0 +1,67 @@
+{
+  "name": "admin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "npm run clean && tsc",
+    "start": "node dist/server.js",
+    "start1": "nodemon --config nodemon.json tsc ./dist/server.js",
+    "predev": "npm run build",
+    "dev1": "nodemon",
+    "dev": "nodemon",
+    "migration:create": "npx sequelize-cli migration:generate",
+    "migrate": "npx sequelize-cli db:migrate",
+    "migrate:rollback": "npx sequelize-cli db:migrate:undo",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "_moduleAliases": {
+    "@utils": "./dist/utils",
+    "@validators": "./dist/validators",
+    "@exceptions": "./dist/exceptions"
+  },
+  "prisma1": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+  },
+  "keywords": [],
+  "author": "NJ",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^6.5.0",
+    "bcryptjs": "^3.0.2",
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "lodash": "^4.17.21",
+    "module-alias": "^2.2.3",
+    "morgan": "^1.10.0",
+    "mysql2": "^3.13.0",
+    "prisma-client": "^0.0.0",
+    "reflect-metadata": "^0.2.2",
+    "winston": "^3.17.0",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.22.0",
+    "@types/dotenv": "^8.2.3",
+    "@types/express": "^5.0.0",
+    "@types/lodash": "^4.17.16",
+    "@types/node": "^22.13.10",
+    "eslint": "^9.22.0",
+    "eslint-config-prettier": "^10.1.1",
+    "eslint-plugin-prettier": "^5.2.3",
+    "globals": "^16.0.0",
+    "nodemon": "^3.1.9",
+    "prettier": "3.5.3",
+    "prisma": "^6.5.0",
+    "rimraf": "^6.0.1",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2",
+    "typescript-eslint": "^8.27.0"
+  }
+}
