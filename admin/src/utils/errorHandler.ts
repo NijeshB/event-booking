@@ -2,7 +2,7 @@ import { Prisma } from '@prisma/client';
 import { Request, Response, NextFunction } from 'express';
 import logger from './logger';
 import z from 'zod';
-import { HttpException } from '@exceptions/customException';
+import { HttpException } from './../exceptions/customException';
 
 //create a async function to handle async errors in express
 export const asyncHandler = (fn: Function) => {
@@ -24,11 +24,12 @@ export const errorHandler = (
     statusCode = error.statusCode;
     message = error.message;
   } else if (error instanceof Prisma.PrismaClientKnownRequestError) {
-    logger.info(`Error::: ${error.code}`);
+    logger.info(`Error:: ${error.code}`);
   } else if (error instanceof z.ZodError) {
     statusCode = 400;
     message = 'Validation Error';
   }
+  logger.info(`Error1:: ${error}`);
 
   // logger.info(`Is Zod Error::: ${error instanceof z.ZodError}`);
   // logger.info(`Is Error::: ${error.message}`);
@@ -38,5 +39,6 @@ export const errorHandler = (
   res.status(statusCode).json({
     status: 'error',
     message: message,
+    ...(process.env.NODE_ENV === 'development' && { error }),
   });
 };

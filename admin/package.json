@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "rimraf dist",
     "build": "npm run clean && tsc",
-    "start": "node dist/server.js",
+    "start": "NODE_ENV=production node dist/server.js",
     "start1": "nodemon --config nodemon.json tsc ./dist/server.js",
     "predev": "npm run build",
     "dev1": "nodemon",
@@ -17,9 +17,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "_moduleAliases": {
-    "@utils": "./dist/utils",
-    "@validators": "./dist/validators",
-    "@exceptions": "./dist/exceptions"
+    "@utils": "./utils",
+    "@validators": "./validators",
+    "@exceptions": "./exceptions"
   },
   "prisma1": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
@@ -50,6 +50,7 @@
     "@types/dotenv": "^8.2.3",
     "@types/express": "^5.0.0",
     "@types/lodash": "^4.17.16",
+    "@types/module-alias": "^2.0.4",
     "@types/node": "^22.13.10",
     "eslint": "^9.22.0",
     "eslint-config-prettier": "^10.1.1",

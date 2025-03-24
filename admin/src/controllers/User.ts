@@ -2,22 +2,26 @@ import { Prisma, User } from '@prisma/client';
 import { omit } from 'lodash';
 import { Request, Response, NextFunction } from 'express';
 import prismaClient from '../db/db';
-import logger from '@utils/logger';
-import z from 'zod';
+import logger from './../utils/logger';
 import {
   createUserSchema,
   typeCreateUser,
   emailSchema,
   typeUserProfile,
   mobileSchema,
-} from '@validators/userValidator';
-import { asyncHandler } from '@utils/errorHandler';
-import { ConflictError, NotFoundException } from '@exceptions/customException';
-import { log } from 'console';
+} from './../validators/userValidator';
+import { asyncHandler } from './../utils/errorHandler';
+import {
+  ConflictError,
+  NotFoundException,
+} from './../exceptions/customException';
 
 export const getUsers = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
+    logger.info('Inside Users:::');
     const users = await prismaClient.user.findMany();
+    logger.info('Users:::', users);
+
     res.status(200).json({
       status: 'success',
       data: {
