@@ -1,7 +1,7 @@
 .env
 node_modules/
 old/*
-admin/.env
-admin/node_modules/
-admin/dist/
-admin/*.log
+backend/.env
+backend/node_modules/
+backend/*.log
+backend/dist
