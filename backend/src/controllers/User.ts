@@ -15,9 +15,7 @@ import { ConflictError, NotFoundException } from '@exceptions/customException';
 
 export const getUsers = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    logger.info('Inside Users:::');
     const users = await prismaClient.user.findMany();
-    logger.info('Users:::', users);
 
     res.status(200).json({
       status: 'success',
