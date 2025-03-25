@@ -2,8 +2,5 @@
   "watch": ["src"],
   "ext": "ts,json",
   "ignore": ["src/**/*.spec.ts", "dist"],
-  "exec1": "ts-node ./src/server.ts",
-  "exec2": "ts-node -r tsconfig-paths/register -r ts-node/register src/server.ts",
-  "exec3": "node -r tsconfig-paths/register -r ts-node/register src/server.ts",
-  "exec": "NODE_ENV=development ts-node -r module-alias/register src/server.ts"
+  "exec": "cross-env NODE_ENV=development ts-node -r module-alias/register  src/server.ts"
 }
