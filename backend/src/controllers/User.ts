@@ -147,6 +147,29 @@ export const deleteUserByMobile = asyncHandler(
     res.status(204).send();
   },
 );
+
+export const deleteUserById = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const user = await prismaClient.user.findUnique({
+      where: {
+        id: Number(req.params.id),
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundException('Given UserId is not available');
+    }
+
+    await prismaClient.user.delete({
+      where: {
+        id: Number(req.params.id),
+      },
+    });
+
+    res.status(204).send();
+  },
+);
+
 const getSafeUser = (user: User | null) => {
   return user ? omit(user, ['password', 'role']) : null;
 };
