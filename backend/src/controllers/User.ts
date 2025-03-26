@@ -1,5 +1,5 @@
 import { Prisma, User } from '@prisma/client';
-import { omit } from 'lodash';
+import { get, omit } from 'lodash';
 import { Request, Response, NextFunction } from 'express';
 import prismaClient from '../db/db';
 import logger from '@utils/logger';
@@ -16,11 +16,32 @@ import { ConflictError, NotFoundException } from '@exceptions/customException';
 export const getUsers = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const users = await prismaClient.user.findMany();
+    users.map(getSafeUser);
+    res.status(200).json({
+      status: 'success',
+      data: {
+        users,
+      },
+    });
+  },
+);
+
+export const getUsersById = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const user = await prismaClient.user.findUnique({
+      where: {
+        id: Number(req.params.id),
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundException('Given UserId is not available');
+    }
 
     res.status(200).json({
       status: 'success',
       data: {
-        users: users.map(getSafeUser),
+        user: getSafeUser(user),
       },
     });
   },
@@ -134,8 +155,8 @@ export const deleteUserByMobile = asyncHandler(
     res.status(204).send();
   },
 );
-const getSafeUser = (user: User) => {
-  return omit(user, ['password', 'role']);
+const getSafeUser = (user: User | null) => {
+  return user ? omit(user, ['password', 'role']) : null;
 };
 
 // const getUserDetails = async (email?: string, mobile?: string) => {
