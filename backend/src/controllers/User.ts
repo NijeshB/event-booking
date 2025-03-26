@@ -19,9 +19,7 @@ export const getUsers = asyncHandler(
     users.map(getSafeUser);
     res.status(200).json({
       status: 'success',
-      data: {
-        users,
-      },
+      data: users,
     });
   },
 );
@@ -40,9 +38,7 @@ export const getUsersById = asyncHandler(
 
     res.status(200).json({
       status: 'success',
-      data: {
-        user: getSafeUser(user),
-      },
+      data: getSafeUser(user),
     });
   },
 );
@@ -78,9 +74,7 @@ export const createUsers = asyncHandler(async (req: Request, res: Response) => {
 
   res.status(200).json({
     status: 'success',
-    data: {
-      user: getSafeUser(user),
-    },
+    data: getSafeUser(user),
   });
 });
 
@@ -101,9 +95,7 @@ export const getUserByEmail = asyncHandler(
 
     res.status(200).json({
       status: 'success',
-      data: {
-        user: getSafeUser(user),
-      },
+      data: getSafeUser(user),
     });
   },
 );
