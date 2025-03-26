@@ -9,11 +9,8 @@
     "start": "node -r dotenv/config ./dist/server.js",
     "start1": "nodemon --config nodemon.json tsc ./dist/server.js",
     "predev": "npm run build",
-    "dev1": "nodemon",
     "dev": "nodemon",
-    "migration:create": "npx sequelize-cli migration:generate",
-    "migrate": "npx sequelize-cli db:migrate",
-    "migrate:rollback": "npx sequelize-cli db:migrate:undo",
+    "prisma-migrate": "npx prisma migrate deploy",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "_moduleAliases1": {
