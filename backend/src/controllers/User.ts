@@ -2,16 +2,18 @@ import { Prisma, User } from '@prisma/client';
 import { get, omit } from 'lodash';
 import { Request, Response, NextFunction } from 'express';
 import prismaClient from '../db/db';
-import logger from '@utils/logger';
 import {
   createUserSchema,
-  typeCreateUser,
   emailSchema,
-  typeUserProfile,
   mobileSchema,
+  validateUserLoginSchema,
 } from '@validators/userValidator';
 import { asyncHandler } from '@utils/errorHandler';
-import { ConflictError, NotFoundException } from '@exceptions/customException';
+import {
+  ConflictError,
+  NotFoundException,
+  UnauthorizedException,
+} from '@exceptions/customException';
 
 export const getUsers = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -170,14 +172,6 @@ export const deleteUserById = asyncHandler(
   },
 );
 
-const getSafeUser = (user: User | null) => {
+export const getSafeUser = (user: User | null) => {
   return user ? omit(user, ['password', 'role']) : null;
 };
-
-// const getUserDetails = async (email?: string, mobile?: string) => {
-//   if (!email && !mobile) return null; // Handle case where both are undefined
-//   const condition = email ? { email } : { mobile };
-//   const user = await prismaClient.user.findFirst({ where: condition });
-
-//   return user ? getSafeUser(user) : null;
-// };

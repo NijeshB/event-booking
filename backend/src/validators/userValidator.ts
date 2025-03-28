@@ -48,5 +48,9 @@ const isStrongPassword = (password: string): boolean => {
   );
 };
 
+export const validateUserLoginSchema = z.object({
+  email: emailSchema,
+  password: z.string({ required_error: 'Password is mandatory!' }),
+});
 export type typeCreateUser = z.infer<typeof createUserSchema>;
 export type typeUserProfile = Omit<typeCreateUser, 'password'>;

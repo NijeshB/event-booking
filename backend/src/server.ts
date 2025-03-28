@@ -11,6 +11,7 @@ import logger from '@utils/logger';
 import userRoutes from './routes/userRoutes';
 
 import { errorHandler } from '@utils/errorHandler';
+import authRoutes from './routes/authRoutes';
 
 dotenv.config({ path: path.resolve(__dirname, './../.env') });
 
@@ -25,7 +26,9 @@ app.use(
     allowedHeaders: 'Content-Type,Authorization',
   }),
 );
+
 app.use('/users', userRoutes);
+app.use('/', authRoutes);
 
 app.use(errorHandler);
 
