@@ -1,11 +1,9 @@
-import { authLogin } from '@controllers/Auth';
+import { authLogin, dashboard, authLogout } from '@controllers/Auth';
 import express from 'express';
 const router = express.Router();
 
 router.post('/login', authLogin);
+router.get('/dashboard', dashboard);
+router.get('/logout', authLogout);
 
-// router.post("/login", (req, res) => {
-//   res.json({ message: "Login route is working!" });
-// });
-// router.get('/logout', authLogout);
 export default router;

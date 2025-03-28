@@ -28,6 +28,14 @@ export class ConflictError extends HttpException {
   }
 }
 
+export class InternalError extends HttpException {
+  constructor(
+    message: string = 'Unable to process request. Please try again later',
+  ) {
+    super(500, message);
+  }
+}
+
 /*
 200 OK	Resource was deleted successfully, and a response body is returned.
 204 No Content	Resource was deleted successfully, and no response body is needed. (Preferred for REST APIs)

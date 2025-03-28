@@ -17,7 +17,7 @@ model User {
   id        Int      @id @default(autoincrement())
   email     String   @unique
   password  String
-  name      String?
+  name      String
   mobile    String   @unique @db.VarChar(15)
   role      Role     @default(USER)
   createdAt DateTime @default(now())

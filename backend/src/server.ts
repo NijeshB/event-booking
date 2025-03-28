@@ -1,10 +1,12 @@
 import './alias-setup'; // Must be the first import
 
 import express from 'express';
+import session from 'express-session';
 import dotenv from 'dotenv';
 import path from 'path';
 import cors from 'cors';
 
+import cookieParser from 'cookie-parser'; // ✅ Import cookie-parser
 import bodyParser from 'body-parser';
 
 import logger from '@utils/logger';
@@ -12,11 +14,23 @@ import userRoutes from './routes/userRoutes';
 
 import { errorHandler } from '@utils/errorHandler';
 import authRoutes from './routes/authRoutes';
+import { isProduction } from '@utils/helpers';
 
 dotenv.config({ path: path.resolve(__dirname, './../.env') });
 
-console.log(process.env.ADMIN_API_URL);
 const app = express();
+
+app.use(cookieParser()); // ✅ Enable cookie parsing
+
+app.use(
+  session({
+    secret: process.env.APP_SECRET!, // Change this to a strong secret
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 5 * 60 * 1000, secure: isProduction },
+  }),
+);
+
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(
@@ -26,6 +40,11 @@ app.use(
     allowedHeaders: 'Content-Type,Authorization',
   }),
 );
+
+app.use((req, res, next) => {
+  console.log('Session:', req.session);
+  next();
+});
 
 app.use('/users', userRoutes);
 app.use('/', authRoutes);

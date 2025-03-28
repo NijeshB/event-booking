@@ -113,5 +113,6 @@
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   },
   "include": ["src/**/*.ts", "alias-setup.ts"],
+  "files": ["src/@types/express-session/index.d.ts"],
   "exclude": ["node_modules", "dist"]
 }
