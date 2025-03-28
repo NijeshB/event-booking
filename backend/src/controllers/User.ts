@@ -44,7 +44,7 @@ export const getUsersById = asyncHandler(
 );
 
 export const createUsers = asyncHandler(async (req: Request, res: Response) => {
-  const validatedData = createUserSchema.parse(req.body);
+  const validatedData = await createUserSchema.parseAsync(req.body);
 
   const { email, mobile } = validatedData;
 
