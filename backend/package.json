@@ -11,6 +11,7 @@
     "predev": "npm run build",
     "dev": "nodemon",
     "prisma-migrate": "npx prisma migrate deploy",
+    "gen-key": "node -e console.log(require('crypto').randomBytes(32).toString('hex'))",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "_moduleAliases1": {
@@ -52,6 +53,7 @@
     "@types/dotenv": "^8.2.3",
     "@types/express": "^5.0.0",
     "@types/express-session": "^1.18.1",
+    "@types/jsonwebtoken": "^9.0.9",
     "@types/lodash": "^4.17.16",
     "@types/module-alias": "^2.0.4",
     "@types/node": "^22.13.10",

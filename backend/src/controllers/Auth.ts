@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
-//import session from 'express-session';
+import session from 'express-session';
+import jwt from 'jsonwebtoken';
 import prismaClient from '../db/db';
+import { User } from '@prisma/client';
 import { validatePassword } from '@utils/hash';
 import { validateUserLoginSchema } from '@validators/userValidator';
 import { asyncHandler } from '@utils/errorHandler';
@@ -39,7 +41,6 @@ export const authLogin = asyncHandler(
       status: 'success',
       message: 'Login Successful',
       data: getSafeUser(user),
-      token: 'testToken',
     });
   },
 );
@@ -72,14 +73,13 @@ export const adminLogin = asyncHandler(
       id: user.id,
       name: user.name,
       email: user.email,
-      token: 'testToken',
     }; // Store user session
 
     res.status(200).json({
       status: 'success',
       message: 'Login Successful',
       data: getSafeUser(user),
-      token: 'testToken',
+      token: getAuthToken(user),
     });
   },
 );
@@ -100,6 +100,18 @@ export const authLogout = asyncHandler(
   },
 );
 
+const getAuthToken = (user: User) => {
+  return jwt.sign(
+    {
+      id: user.id,
+      email: user.email,
+    },
+    process.env.JWT_SECRET as string,
+    {
+      expiresIn: '1h',
+    },
+  );
+};
 /* DUMMY ROUTES TO BE DELETED LATER*/
 export const dashboard = (req: Request, res: Response) => {
   if (!req.session.user) {
