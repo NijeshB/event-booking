@@ -38,6 +38,8 @@ app.use(
     origin: process.env.ADMIN_API_URL, // Update this to match your frontend URL
     methods: 'GET,POST,PUT,DELETE',
     allowedHeaders: 'Content-Type,Authorization',
+    credentials: true,
+    maxAge: 600, // ✅ Cache preflight response for 10 minutes
   }),
 );
 

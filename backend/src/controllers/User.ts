@@ -17,7 +17,11 @@ import {
 
 export const getUsers = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    const users = await prismaClient.user.findMany();
+    const users = await prismaClient.user.findMany({
+      orderBy: {
+        id: 'asc',
+      },
+    });
     users.map(getSafeUser);
     res.status(200).json({
       status: 'success',

@@ -16,7 +16,7 @@ import {
   UpdateManyResult,
 } from "react-admin";
 
-const apiUrl = "http://localhost:3000"; // Replace with your actual API URL
+const apiUrl = import.meta.env.VITE_API_URL; // ✅ Use Vite env variable
 const httpClient = fetchUtils.fetchJson;
 
 const dataProvider: DataProvider = {

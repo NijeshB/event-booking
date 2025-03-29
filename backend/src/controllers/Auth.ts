@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import session from 'express-session';
+//import session from 'express-session';
 import prismaClient from '../db/db';
 import { validatePassword } from '@utils/hash';
 import { validateUserLoginSchema } from '@validators/userValidator';
@@ -32,12 +32,14 @@ export const authLogin = asyncHandler(
       id: user.id,
       name: user.name,
       email: user.email,
+      token: 'testToken',
     }; // Store user session
 
     res.status(200).json({
       status: 'success',
       message: 'Login Successful',
       data: getSafeUser(user),
+      token: 'testToken',
     });
   },
 );

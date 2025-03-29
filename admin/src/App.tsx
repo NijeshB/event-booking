@@ -4,9 +4,15 @@ import dataProvider from "./dataProvider";
 import { UserList } from "./users/UserList";
 import { UserEdit } from "./users/UserEdit";
 import { UserCreate } from "./users/UserCreate";
+import authProvider from "./AuthProvider";
+// import { MyLayout } from "./CustomLayout";
 
 export const App = () => (
-  <Admin layout={Layout} dataProvider={dataProvider}>
+  <Admin
+    layout={Layout}
+    authProvider={authProvider}
+    dataProvider={dataProvider}
+  >
     <Resource
       name="users"
       list={UserList}
