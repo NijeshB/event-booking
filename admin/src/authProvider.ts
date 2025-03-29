@@ -5,7 +5,7 @@ const httpClient = fetchUtils.fetchJson;
 
 const authProvider: AuthProvider = {
   login: async ({ username, password }) => {
-    const response = await httpClient(`${apiUrl}/login`, {
+    const response = await httpClient(`${apiUrl}/adminLogin`, {
       method: "POST",
       body: JSON.stringify({ email: username, password }),
       headers: new Headers({ "Content-Type": "application/json" }),

@@ -179,3 +179,37 @@ export const deleteUserById = asyncHandler(
 export const getSafeUser = (user: User | null) => {
   return user ? omit(user, ['password', 'role']) : null;
 };
+
+export const updateUsers = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.params;
+    const reqData = req.body;
+    reqData.role = reqData.role.toUpperCase();
+
+    const user = await prismaClient.user.findUnique({
+      where: {
+        id: +id,
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundException('Given UserId is not available');
+    }
+
+    const updatedUser = await prismaClient.user.update({
+      where: {
+        id: +id,
+      },
+      data: {
+        ...reqData,
+      },
+    });
+
+    console.log('Requested user ', reqData);
+    console.log('Updated user ', updatedUser);
+    res.status(200).json({
+      status: 'success',
+      data: getSafeUser(updatedUser),
+    });
+  },
+);

@@ -9,6 +9,7 @@ import {
   InternalError,
 } from '@exceptions/customException';
 import { getSafeUser } from '@controllers/User';
+import { isAdmin } from '@utils/helpers';
 
 export const authLogin = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -26,6 +27,45 @@ export const authLogin = asyncHandler(
 
     if (!(await validatePassword(authLogin.password, user.password))) {
       throw new UnauthorizedException('Invalid Email or Password!');
+    }
+
+    req.session.user = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+    }; // Store user session
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Login Successful',
+      data: getSafeUser(user),
+      token: 'testToken',
+    });
+  },
+);
+
+export const adminLogin = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const authLogin = validateUserLoginSchema.parse(req.body);
+
+    const user = await prismaClient.user.findFirst({
+      where: {
+        email: authLogin.email,
+      },
+    });
+
+    if (!user) {
+      throw new UnauthorizedException('Invalid Email or Password!');
+    }
+
+    if (!(await validatePassword(authLogin.password, user.password))) {
+      throw new UnauthorizedException('Invalid Email or Password!');
+    }
+
+    if (!isAdmin(user.role)) {
+      throw new UnauthorizedException(
+        'You are not authorized to access this resource!',
+      );
     }
 
     req.session.user = {

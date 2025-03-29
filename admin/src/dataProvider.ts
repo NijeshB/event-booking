@@ -21,7 +21,6 @@ const httpClient = fetchUtils.fetchJson;
 
 const dataProvider: DataProvider = {
   getList: async (resource: string) => {
-    console.log(`API Endpoint = ${apiUrl}/${resource}`);
     const { json } = await httpClient(`${apiUrl}/${resource}`);
     const users = json.data || [];
 
@@ -47,8 +46,26 @@ const dataProvider: DataProvider = {
     });
     return { data: json };
   },
+  update: async (resource, params) => {
+    const { previousData, data } = params;
 
-  update: async (resource: string, params: UpdateParams) => {
+    // ✅ Compute only changed fields
+    const updatedFields = Object.keys(data).reduce(
+      (acc, key) => {
+        if (data[key] !== previousData[key]) {
+          acc[key] = data[key];
+        }
+        return acc;
+      },
+      {} as Record<string, any>,
+    );
+
+    return httpClient(`${apiUrl}/${resource}/${params.id}`, {
+      method: "PUT",
+      body: JSON.stringify(updatedFields), // ✅ Send only modified fields
+    }).then(({ json }) => ({ data: json.data }));
+  },
+  updateOld: async (resource: string, params: UpdateParams) => {
     const { json } = await httpClient(`${apiUrl}/${resource}/${params.id}`, {
       method: "PUT",
       body: JSON.stringify(params.data),

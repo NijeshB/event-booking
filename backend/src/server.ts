@@ -43,10 +43,10 @@ app.use(
   }),
 );
 
-app.use((req, res, next) => {
-  console.log('Session:', req.session);
-  next();
-});
+// app.use((req, res, next) => {
+//   console.log('Session:', req.session);
+//   next();
+// });
 
 app.use('/users', userRoutes);
 app.use('/', authRoutes);
