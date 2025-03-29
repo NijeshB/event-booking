@@ -12,9 +12,14 @@ const authProvider: AuthProvider = {
       //   credentials: "include",
     });
 
-    if (response.status !== 200) {
+    if (response.status === 401) {
       // ✅ Explicitly check for 200
       throw new Error("Invalid credentials");
+    }
+
+    if (response.status !== 200) {
+      // ✅ Explicitly check for 200
+      throw new Error("Unable to login. Please try again.");
     }
 
     const { token } = response.json.data; // ✅ Adjusted to match your API response structure
