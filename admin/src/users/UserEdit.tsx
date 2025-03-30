@@ -37,8 +37,8 @@ export const UserEdit = () => (
       <SelectInput
         source="role"
         choices={[
-          { id: "admin", name: "Admin" },
-          { id: "user", name: "User" },
+          { id: "ADMIN", name: "Admin" },
+          { id: "USER", name: "User" },
         ]}
       />
     </SimpleForm>

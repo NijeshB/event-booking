@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 const IDLE_TIMEOUT = 15 * 60 * 1000; // 15 minutes
@@ -8,12 +8,12 @@ const IdleTimer = () => {
   const navigate = useNavigate();
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const handleLogout = () => {
+  const handleLogout = useCallback(() => {
     localStorage.removeItem("token");
     navigate("/login");
-  };
+  }, [navigate]);
 
-  const resetTimer = () => {
+  const resetTimer = useCallback(() => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     timeoutRef.current = setTimeout(() => {
       const inactiveTime = Date.now() - lastActivityRef.current;
@@ -23,7 +23,7 @@ const IdleTimer = () => {
         resetTimer(); // Schedule the next check in 5 minutes
       }
     }, CHECK_DELAY);
-  };
+  }, [handleLogout]);
 
   const lastActivityRef = useRef(Date.now());
 
@@ -44,7 +44,7 @@ const IdleTimer = () => {
       );
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
-  }, []);
+  }, [resetTimer]);
 
   return null;
 };
