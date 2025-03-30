@@ -1,19 +1,14 @@
-import { Prisma, User } from '@prisma/client';
-import { get, omit } from 'lodash';
+import { User } from '@prisma/client';
+import { omit } from 'lodash';
 import { Request, Response, NextFunction } from 'express';
 import prismaClient from '../db/db';
 import {
   createUserSchema,
   emailSchema,
   mobileSchema,
-  validateUserLoginSchema,
 } from '@validators/userValidator';
 import { asyncHandler } from '@utils/errorHandler';
-import {
-  ConflictError,
-  NotFoundException,
-  UnauthorizedException,
-} from '@exceptions/customException';
+import { ConflictError, NotFoundException } from '@exceptions/customException';
 
 export const getUsers = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -177,7 +172,7 @@ export const deleteUserById = asyncHandler(
 );
 
 export const getSafeUser = (user: User | null) => {
-  return user ? omit(user, ['password', 'role']) : null;
+  return user ? omit(user, ['password']) : null;
 };
 
 export const updateUsers = asyncHandler(
