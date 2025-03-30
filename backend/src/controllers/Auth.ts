@@ -13,6 +13,7 @@ import {
 import { getSafeUser } from '@controllers/User';
 import { isAdmin } from '@utils/helpers';
 
+const JWT_SECRET = process.env.JWT_SECRET as string;
 export const authLogin = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const authLogin = validateUserLoginSchema.parse(req.body);
@@ -105,12 +106,23 @@ const getAuthToken = (user: User) => {
     {
       id: user.id,
       email: user.email,
+      role: user.role,
     },
-    process.env.JWT_SECRET as string,
+    JWT_SECRET,
     {
       expiresIn: '1h',
     },
   );
+};
+
+export const verifyAuthToken = (token: string) => {
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    return decoded;
+  } catch (err) {
+    //throw new UnauthorizedException('Invalid token!');
+    return false;
+  }
 };
 /* DUMMY ROUTES TO BE DELETED LATER*/
 export const dashboard = (req: Request, res: Response) => {

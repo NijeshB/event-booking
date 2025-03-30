@@ -13,7 +13,7 @@ const authProvider: AuthProvider = {
     });
 
     if (response.status == 200) {
-      const { token } = response.json.data; // ✅ Adjusted to match your API response structure
+      const { token } = response.json; // ✅ Adjusted to match your API response structure
       localStorage.setItem("token", token);
     }
   },
