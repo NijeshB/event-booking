@@ -12,8 +12,10 @@ import {
 } from '@exceptions/customException';
 import { getSafeUser } from '@controllers/User';
 import { isAdmin } from '@utils/helpers';
-
 const JWT_SECRET = process.env.JWT_SECRET as string;
+const EXPECTED_ISSUER = process.env.JWT_TOKEN_ISSUER;
+console.log('EXPECTED_ISSUER', EXPECTED_ISSUER);
+
 export const authLogin = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const authLogin = validateUserLoginSchema.parse(req.body);
@@ -106,22 +108,41 @@ const getAuthToken = (user: User) => {
     {
       id: user.id,
       email: user.email,
-      role: user.role,
+      role1: user.role,
+      iss: EXPECTED_ISSUER,
     },
     JWT_SECRET,
     {
-      expiresIn: '1h',
+      expiresIn: 5 * 60,
     },
   );
 };
 
-export const verifyAuthToken = (token: string) => {
+export const verifyAuthToken = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
-    const decoded = jwt.verify(token, JWT_SECRET);
-    return decoded;
+    const authHeader = req.headers.authorization; // Get 'Authorization' header
+
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      throw new UnauthorizedException('Unauthorized!');
+    }
+
+    const token = authHeader.split(' ')[1];
+    const decoded = jwt.verify(token, JWT_SECRET) as jwt.JwtPayload;
+    // Check if the issuer is correct
+    if (!decoded.iss || decoded.iss !== EXPECTED_ISSUER) {
+      throw new UnauthorizedException('Unauthorized!');
+    }
+
+    if (decoded) {
+      next();
+    }
   } catch (err) {
-    //throw new UnauthorizedException('Invalid token!');
-    return false;
+    throw new UnauthorizedException('Invalid token!');
+    //return next(err);
   }
 };
 /* DUMMY ROUTES TO BE DELETED LATER*/

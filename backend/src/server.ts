@@ -15,6 +15,7 @@ import userRoutes from './routes/userRoutes';
 import { errorHandler } from '@utils/errorHandler';
 import authRoutes from './routes/authRoutes';
 import { isProduction } from '@utils/helpers';
+import { verifyAuthToken } from '@controllers/Auth';
 
 dotenv.config({ path: path.resolve(__dirname, './../.env') });
 
@@ -53,7 +54,7 @@ app.use((req, res, next) => {
 //   next();
 // });
 
-app.use('/users', userRoutes);
+app.use('/users', verifyAuthToken, userRoutes);
 app.use('/', authRoutes);
 
 app.use(errorHandler);

@@ -23,7 +23,7 @@ const fetchAPIData = (url: string, options: fetchUtils.Options = {}) => {
   const customHeaders = (options.headers ||
     new Headers({ Accept: "application/json" })) as Headers;
   // add your own headers here
-  customHeaders.set("auth-token", localStorage.token);
+  customHeaders.set("Authorization", "Bearer " + localStorage.token);
   options.headers = customHeaders;
   return fetchUtils.fetchJson(url, options);
 };
