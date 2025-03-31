@@ -36,12 +36,17 @@ app.use(bodyParser.json());
 app.use(
   cors({
     origin: process.env.ADMIN_API_URL, // Update this to match your frontend URL
-    methods: 'GET,POST,PUT,DELETE',
-    allowedHeaders: 'Content-Type,Authorization',
+    methods: 'GET,POST,PUT,DELETE,OPTIONS',
+    allowedHeaders: ['Content-Type', 'Authorization', 'auth-token'],
     credentials: true,
-    maxAge: 600, // ✅ Cache preflight response for 10 minutes
+    //maxAge: 600, // ✅ Cache preflight response for 10 minutes
   }),
 );
+
+app.use((req, res, next) => {
+  console.log('Incoming request:', req.method, req.url);
+  next();
+});
 
 // app.use((req, res, next) => {
 //   console.log('Session:', req.session);

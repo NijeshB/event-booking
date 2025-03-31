@@ -14,14 +14,25 @@ import {
   RaRecord,
   UpdateManyParams,
   UpdateManyResult,
+  usePermissions,
 } from "react-admin";
 
 const apiUrl = import.meta.env.VITE_API_URL; // ✅ Use Vite env variable
+
+const fetchAPIData = (url: string, options: fetchUtils.Options = {}) => {
+  const customHeaders = (options.headers ||
+    new Headers({ Accept: "application/json" })) as Headers;
+  // add your own headers here
+  customHeaders.set("auth-token", localStorage.token);
+  options.headers = customHeaders;
+  return fetchUtils.fetchJson(url, options);
+};
+
 const httpClient = fetchUtils.fetchJson;
 
 const dataProvider: DataProvider = {
   getList: async (resource: string) => {
-    const { json } = await httpClient(`${apiUrl}/${resource}`);
+    const { json } = await fetchAPIData(`${apiUrl}/${resource}`);
     const users = json.data || [];
 
     return { data: users, total: users.length };
@@ -29,7 +40,7 @@ const dataProvider: DataProvider = {
 
   getOne: async (resource: string, params: GetOneParams) => {
     try {
-      const { json } = await httpClient(`${apiUrl}/${resource}/${params.id}`);
+      const { json } = await fetchAPIData(`${apiUrl}/${resource}/${params.id}`);
       return { data: json.data };
     } catch (error: any) {
       if (error.status === 404) {
@@ -40,11 +51,11 @@ const dataProvider: DataProvider = {
   },
 
   create: async (resource: string, params: CreateParams) => {
-    const { json } = await httpClient(`${apiUrl}/${resource}`, {
+    const { json } = await fetchAPIData(`${apiUrl}/${resource}`, {
       method: "POST",
       body: JSON.stringify(params.data),
     });
-    return { data: json };
+    return { data: json.data };
   },
   update: async (resource, params) => {
     const { previousData, data } = params;
@@ -60,13 +71,13 @@ const dataProvider: DataProvider = {
       {} as Record<string, any>,
     );
 
-    return httpClient(`${apiUrl}/${resource}/${params.id}`, {
+    return fetchAPIData(`${apiUrl}/${resource}/${params.id}`, {
       method: "PUT",
       body: JSON.stringify(updatedFields), // ✅ Send only modified fields
     }).then(({ json }) => ({ data: json.data }));
   },
   updateOld: async (resource: string, params: UpdateParams) => {
-    const { json } = await httpClient(`${apiUrl}/${resource}/${params.id}`, {
+    const { json } = await fetchAPIData(`${apiUrl}/${resource}/${params.id}`, {
       method: "PUT",
       body: JSON.stringify(params.data),
     });
@@ -74,7 +85,8 @@ const dataProvider: DataProvider = {
   },
 
   deleteOne: async (resource: string, params: DeleteParams) => {
-    await httpClient(`${apiUrl}/${resource}/${params.id}`, {
+    console.log("Delete One API");
+    await fetchAPIData(`${apiUrl}/${resource}/${params.id}`, {
       method: "DELETE",
     });
     return { data: params.previousData };
@@ -94,7 +106,7 @@ const dataProvider: DataProvider = {
       method: "DELETE",
     });
 
-    return { data: json.data || { id } }; // Ensure React-Admin gets a valid response
+    return { data: json.id }; // Ensure React-Admin gets a valid response
   },
   getMany: function <RecordType extends RaRecord = any>(
     resource: string,

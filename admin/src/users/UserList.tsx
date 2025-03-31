@@ -5,19 +5,21 @@ import {
   EmailField,
   EditButton,
   DateField,
+  DeleteButton,
 } from "react-admin";
 
-import CustomDeleteButton from "./Deletenotify";
 export const UserList = () => (
   <List>
     <Datagrid>
       <TextField source="id" />
       <TextField source="name" />
+      <TextField source="mobile" />
       <EmailField source="email" />
       <TextField source="role" />
+      {/* <CustomDeleteButton /> */}
       <DateField label="Created Date" source="createdAt" />
       <EditButton />
-      <CustomDeleteButton />
+      <DeleteButton />
     </Datagrid>
   </List>
 );

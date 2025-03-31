@@ -151,9 +151,10 @@ export const deleteUserByMobile = asyncHandler(
 
 export const deleteUserById = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
+    const id = Number(req.params.id);
     const user = await prismaClient.user.findUnique({
       where: {
-        id: Number(req.params.id),
+        id,
       },
     });
 
@@ -163,11 +164,12 @@ export const deleteUserById = asyncHandler(
 
     await prismaClient.user.delete({
       where: {
-        id: Number(req.params.id),
+        id,
       },
     });
 
-    res.status(204).send();
+    res.status(200).json({ id }); // React Admin expects { id: deletedId }
+    // res.status(204).send();
   },
 );
 

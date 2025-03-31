@@ -33,6 +33,7 @@ export const UserEdit = () => (
     <SimpleForm toolbar={<CustomToolbar />}>
       <TextInput source="id" disabled />
       <TextInput source="name" />
+      <TextInput source="mobile" />
       <TextInput source="email" />
       <SelectInput
         source="role"
