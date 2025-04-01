@@ -2,8 +2,10 @@ import path from 'path';
 import moduleAlias from 'module-alias';
 import { isProduction } from './utils/helpers';
 // Determine the base directory dynamically
-console.log('isProduction', isProduction)
+console.log('isProduction', isProduction);
 const baseDir = isProduction ? 'dist' : 'src';
+
+console.log('Dir', process.cwd(), baseDir);
 moduleAlias.addAliases({
   '@utils': path.join(process.cwd(), baseDir, 'utils'),
   '@validators': path.join(process.cwd(), baseDir, 'validators'),
