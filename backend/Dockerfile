@@ -1,5 +1,7 @@
 # Use the official Node.js 22 Alpine image
-FROM node:22
+#FROM node:alpine
+
+FROM node:lts-bullseye
 
 RUN ["apt-get", "update"]
 RUN ["apt-get", "install", "-y", "vim"]
@@ -10,17 +12,22 @@ COPY package.json package-lock.json ./
 
 RUN npm install --omit=dev
 
-RUN npm rebuild bcrypt --build-from-source
+RUN npm install --save-dev @types/node
 
-RUN npx dotenv -e .env -- npx prisma generate
+#RUN npm rebuild bcrypt --build-from-source
+
+#RUN npx prisma generate --schema="prisma/schema.prisma"
 
 COPY . . 
 
+RUN npx prisma generate --schema="prisma/schema.prisma"
+
+
 RUN npm run build
 
-WORKDIR /app/dist
+WORKDIR /app
 
 EXPOSE 3000
 
-CMD ["node", "server.js"]
+CMD ["node", "dist/server.js"]
 

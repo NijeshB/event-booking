@@ -3,7 +3,11 @@ import './alias-setup'; // Must be the first import
 import express from 'express';
 import session from 'express-session';
 import dotenv from 'dotenv';
-import path from 'path';
+import * as path from 'path';
+console.log("Path type:", typeof path); // Should print "object"
+
+//import * as path from 'node:path';
+
 import cors from 'cors';
 
 import cookieParser from 'cookie-parser'; // ✅ Import cookie-parser
@@ -17,7 +21,10 @@ import authRoutes from './routes/authRoutes';
 import { isProduction } from '@utils/helpers';
 import { verifyAuthToken } from '@controllers/Auth';
 
-dotenv.config({ path: path.resolve(__dirname, './../.env') });
+//dotenv.config({ path: path.resolve(path.dirname, './../.env') });
+
+dotenv.config({ path: __dirname + '/../.env' });
+
 
 const app = express();
 
