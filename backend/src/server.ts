@@ -4,7 +4,7 @@ import express from 'express';
 import session from 'express-session';
 import dotenv from 'dotenv';
 import * as path from 'path';
-console.log("Path type:", typeof path); // Should print "object"
+console.log('Path type:', typeof path); // Should print "object"
 
 //import * as path from 'node:path';
 
@@ -24,7 +24,6 @@ import { verifyAuthToken } from '@controllers/Auth';
 //dotenv.config({ path: path.resolve(path.dirname, './../.env') });
 
 dotenv.config({ path: __dirname + '/../.env' });
-
 
 const app = express();
 

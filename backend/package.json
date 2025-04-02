@@ -13,9 +13,9 @@
     "dev": "nodemon",
     "prisma-migrate": "npx prisma migrate deploy",
     "gen-key": "node -e console.log(require('crypto').randomBytes(32).toString('hex'))",
-    "gen-img":"docker build -t event-booking-backend .",
-    "run-img":"docker run -it --env-file .env -p 3000:3000 event-booking-backend sh",
-    "test-port-win" : "netstat -ano | findStr '8080'",
+    "gen-img": "docker build -t event-booking-backend .",
+    "run-img": "docker run -it --env-file .env -p 3000:3000 event-booking-backend sh",
+    "test-port-win": "netstat -ano | findStr '8080'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "_moduleAliases1": {

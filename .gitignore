@@ -7,3 +7,4 @@ backend/*.log
 backend/dist
 admin/src/Menu.tsx
 admin/src/CustomLayout.tsx
+postgres.txt
