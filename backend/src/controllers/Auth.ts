@@ -1,8 +1,4 @@
 import { Request, Response, NextFunction } from 'express';
-import session from 'express-session';
-import jwt from 'jsonwebtoken';
-import prismaClient from '../db/db';
-import { User } from '@prisma/client';
 import { validatePassword } from '@utils/hash';
 import { validateUserLoginSchema } from '@validators/userValidator';
 import { asyncHandler } from '@utils/errorHandler';
@@ -11,19 +7,14 @@ import {
   InternalError,
 } from '@exceptions/customException';
 import { isAdmin, getSafeUser } from '@utils/helpers';
-const JWT_SECRET = process.env.JWT_SECRET as string;
-const EXPECTED_ISSUER = process.env.JWT_TOKEN_ISSUER;
-console.log('EXPECTED_ISSUER', EXPECTED_ISSUER);
+import { userModel } from '@model/UserModel';
+import { jwToken } from '@utils/jwt';
 
 export const authLogin = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const authLogin = validateUserLoginSchema.parse(req.body);
 
-    const user = await prismaClient.user.findFirst({
-      where: {
-        email: authLogin.email,
-      },
-    });
+    const user = await userModel.findUsers(authLogin.email);
 
     if (!user) {
       throw new UnauthorizedException('Invalid Email or Password!');
@@ -51,11 +42,7 @@ export const adminLogin = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const authLogin = validateUserLoginSchema.parse(req.body);
 
-    const user = await prismaClient.user.findFirst({
-      where: {
-        email: authLogin.email,
-      },
-    });
+    const user = await userModel.findUsers(authLogin.email);
 
     if (!user) {
       throw new UnauthorizedException('Invalid Email or Password!');
@@ -81,7 +68,7 @@ export const adminLogin = asyncHandler(
       status: 'success',
       message: 'Login Successful',
       data: getSafeUser(user),
-      token: getAuthToken(user),
+      token: jwToken.getAuthToken(user),
     });
   },
 );
@@ -102,21 +89,6 @@ export const authLogout = asyncHandler(
   },
 );
 
-const getAuthToken = (user: User) => {
-  return jwt.sign(
-    {
-      id: user.id,
-      email: user.email,
-      role1: user.role,
-      iss: EXPECTED_ISSUER,
-    },
-    JWT_SECRET,
-    {
-      expiresIn: 5 * 60,
-    },
-  );
-};
-
 export const verifyAuthToken = (
   req: Request,
   res: Response,
@@ -130,11 +102,7 @@ export const verifyAuthToken = (
     }
 
     const token = authHeader.split(' ')[1];
-    const decoded = jwt.verify(token, JWT_SECRET) as jwt.JwtPayload;
-    // Check if the issuer is correct
-    if (!decoded.iss || decoded.iss !== EXPECTED_ISSUER) {
-      throw new UnauthorizedException('Unauthorized!');
-    }
+    const decoded = jwToken.verifyToken(token);
 
     if (decoded) {
       next();
