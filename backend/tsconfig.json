@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-	    "types": ["node"],
+    "types": ["node"],
     /* Visit https://aka.ms/tsconfig to read more about this file */
 
     /* Projects */
@@ -34,9 +34,13 @@
     "baseUrl": "./" /* Specify the base directory to resolve non-relative module names. */,
     "paths": {
       "@utils/*": ["src/utils/*"],
+      "@db/*": ["src/db/*"],
+      "@model/*": ["src/model/*"],
+      "@middleware/*": ["src/middleware/*"],
       "@validators/*": ["src/validators/*"],
       "@exceptions/*": ["src/exceptions/*"],
-      "@controllers/*": ["src/controllers/*"]
+      "@controllers/*": ["src/controllers/*"],
+      "@types/*": ["src/types/*"]
     } /* Specify a set of entries that re-map imports to additional lookup locations. */,
     // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
     // "typeRoots": [],                                  /* Specify multiple folders that act like './node_modules/@types'. */
@@ -114,6 +118,9 @@
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   },
   "include": ["src/**/*.ts", "alias-setup.ts"],
-  "files": ["src/@types/express-session/index.d.ts"],
+  "files": [
+    "src/types/express-session/index.d.ts",
+    "src/types/userHeader/index.d.ts"
+  ],
   "exclude": ["node_modules", "dist"]
 }

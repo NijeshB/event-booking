@@ -10,8 +10,7 @@ import {
   UnauthorizedException,
   InternalError,
 } from '@exceptions/customException';
-import { getSafeUser } from '@controllers/User';
-import { isAdmin } from '@utils/helpers';
+import { isAdmin, getSafeUser } from '@utils/helpers';
 const JWT_SECRET = process.env.JWT_SECRET as string;
 const EXPECTED_ISSUER = process.env.JWT_TOKEN_ISSUER;
 console.log('EXPECTED_ISSUER', EXPECTED_ISSUER);

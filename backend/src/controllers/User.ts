@@ -1,5 +1,3 @@
-import { User } from '@prisma/client';
-import { omit } from 'lodash';
 import { Request, Response, NextFunction } from 'express';
 import prismaClient from '../db/db';
 import {
@@ -9,6 +7,7 @@ import {
 } from '@validators/userValidator';
 import { asyncHandler } from '@utils/errorHandler';
 import { ConflictError, NotFoundException } from '@exceptions/customException';
+import { getSafeUser } from '@utils/helpers';
 
 export const getUsers = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -172,10 +171,6 @@ export const deleteUserById = asyncHandler(
     // res.status(204).send();
   },
 );
-
-export const getSafeUser = (user: User | null) => {
-  return user ? omit(user, ['password']) : null;
-};
 
 export const updateUsers = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {

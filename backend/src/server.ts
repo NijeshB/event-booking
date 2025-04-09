@@ -20,6 +20,7 @@ import { errorHandler } from '@utils/errorHandler';
 import authRoutes from './routes/authRoutes';
 import { isProduction } from '@utils/helpers';
 import { verifyAuthToken } from '@controllers/Auth';
+import { eventRoutes } from './routes/eventRoutes';
 
 //dotenv.config({ path: path.resolve(path.dirname, './../.env') });
 
@@ -61,6 +62,7 @@ app.use(
 // });
 
 app.use('/users', verifyAuthToken, userRoutes);
+app.use('/event', eventRoutes);
 app.use('/', authRoutes);
 
 app.use(errorHandler);
