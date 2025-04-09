@@ -1,7 +1,7 @@
 import { UnauthorizedException } from '@exceptions/customException';
 import jwt from 'jsonwebtoken';
 import { User } from '@prisma/client';
-import { secrets } from 'src/secret';
+import { secrets } from '../secret';
 
 const JWT_SECRET = secrets.JWT_SECRET;
 export const jwToken = {
