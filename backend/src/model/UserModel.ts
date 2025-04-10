@@ -21,7 +21,7 @@ export const userModel = {
     }
 
     const condition: SEARCH_USER = (
-      useOr ? { or: getOrCondition(search) } : search
+      useOr ? { OR: getOrCondition(search) } : search
     ) as SEARCH_USER;
     return await prismaClient.user
       .findFirst({ where: condition })
