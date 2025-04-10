@@ -5,15 +5,22 @@ import {
   deleteUserByEmail,
   deleteUserById,
   deleteUserByMobile,
-  getUserByEmail,
   getUsers,
-  getUsersById,
+  findSingleUser,
 } from '@controllers/User';
+
 const router = express.Router();
 
+const uuidPattern =
+  '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}';
+
+const uuidRoute = new RegExp(`^/(?<uuid>${uuidPattern})$`);
+
 router.get('/', getUsers);
-router.get('/:id(\\d+)', getUsersById);
-router.get('/byEmail', getUserByEmail);
+
+router.get(uuidRoute, findSingleUser);
+router.get('/:id(\\d+)', findSingleUser);
+router.get('/byEmail', findSingleUser);
 
 router.put('/:id(\\d+)', updateUsers);
 

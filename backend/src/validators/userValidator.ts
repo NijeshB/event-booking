@@ -52,5 +52,27 @@ export const validateUserLoginSchema = z.object({
   email: emailSchema,
   password: z.string({ required_error: 'Password is mandatory!' }),
 });
+
+export const SearchUserSchema = z
+  .object({
+    id: z.coerce.number().optional(),
+    email: z.string().optional(),
+    mobile: z.string().optional(),
+    uuid: z.string().optional(),
+  })
+  .refine(
+    (data) => {
+      return (
+        data.id !== undefined ||
+        data.uuid !== undefined ||
+        data.email !== undefined ||
+        data.mobile !== undefined
+      );
+    },
+    {
+      message: 'Provided search criteria is not valid!',
+    },
+  );
+
 export type typeCreateUser = z.infer<typeof createUserSchema>;
 export type typeUserProfile = Omit<typeCreateUser, 'password'>;
