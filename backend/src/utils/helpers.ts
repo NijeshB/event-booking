@@ -19,7 +19,7 @@ export const getOrCondition = (search: SEARCH_USER_LIST) => {
     return null;
   }
 
-  const orConditions = Object.entries(search) // Convert object to entries array
+  return Object.entries(search) // Convert object to entries array
     .filter(([_, value]) => value !== undefined && value !== null) // Only include defined values
     .map(([key, value]) => ({ [key]: value })); // Map each key-value pair to its own object
 };
