@@ -23,10 +23,58 @@ model User {
   role      Role     @default(USER)
   createdAt DateTime @default(now())
 
+  createdRelation  Event[] @relation("createdRelation")
+  modifiedRelation Event[] @relation("modifiedRelation")
+
   @@index([email])
+}
+
+model Event {
+  id               Int       @id @default(autoincrement())
+  name             String    @db.VarChar(255)
+  description      String    @db.Text
+  startDate        DateTime
+  endDate          DateTime
+  bookingStartDate DateTime
+  bookingEndDate   DateTime
+  eventMode        EventMode @default(ONLINE)
+  venueID          Int
+  link             String
+  priceType        PriceType @default(FREE)
+  price            Decimal   @default(0)
+  discount         Decimal   @default(0)
+  availableSlots   Int
+  status           Boolean   @default(true)
+  createdBy        Int
+  createdAt        DateTime
+  modifiedBy       Int?
+  modifiedAt       DateTime? @updatedAt
+  venueRelation    Venue     @relation(references: [id], fields: [venueID])
+  createdRelation  User      @relation("createdRelation", references: [id], fields: [createdBy])
+  modifiedRelation User?     @relation("modifiedRelation", references: [id], fields: [modifiedBy])
+}
+
+model Venue {
+  id          Int     @id @default(autoincrement())
+  name        String  @db.VarChar(255)
+  mapLocation String
+  address     String
+  status      Boolean @default(true)
+  Event       Event[]
 }
 
 enum Role {
   USER
   ADMIN
+}
+
+enum EventMode {
+  ONLINE
+  OFFLINE
+  HYBRID
+}
+
+enum PriceType {
+  FREE
+  PAID
 }
