@@ -8,7 +8,7 @@ import {
 } from '@validators/userValidator';
 import { asyncHandler } from '@utils/errorHandler';
 import { ConflictError, NotFoundException } from '@exceptions/customException';
-import { getOrCondition, getSafeUser } from '@utils/helpers';
+import { getSafeUser } from '@utils/helpers';
 import { userModel } from '@model/UserModel';
 import { SEARCH_USER } from '../types/UserType';
 
