@@ -4,7 +4,6 @@ import express from 'express';
 import session from 'express-session';
 import dotenv from 'dotenv';
 import * as path from 'path';
-console.log('Path type:', typeof path); // Should print "object"
 
 //import * as path from 'node:path';
 
