@@ -1,7 +1,7 @@
 import { UnauthorizedException } from '@exceptions/customException';
 import jwt from 'jsonwebtoken';
 import { User } from '@prisma/client';
-import { secrets } from '../secret';
+import { secrets, TOKEN_EXPIRES_IN } from '../secret';
 
 const JWT_SECRET = secrets.JWT_SECRET;
 export const jwToken = {
@@ -11,6 +11,8 @@ export const jwToken = {
     return tokenDetails;
   },
   getAuthToken: (user: User) => {
-    return jwt.sign({ id: user.uuid }, JWT_SECRET, { expiresIn: 5 * 60 });
+    return jwt.sign({ id: user.uuid }, JWT_SECRET, {
+      expiresIn: TOKEN_EXPIRES_IN * 60,
+    });
   },
 };
