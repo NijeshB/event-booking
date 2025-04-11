@@ -1,16 +1,17 @@
 import { Request, Response, NextFunction } from 'express';
 import prismaClient from '@db/db';
+import { SEARCH_USER, USER_PROFILE } from '@customTypes/UserType';
 import {
   createUserSchema,
   emailSchema,
   mobileSchema,
   SearchUserSchema,
 } from '@validators/userValidator';
+
+import { userModel } from '@model/UserModel';
 import { asyncHandler } from '@utils/errorHandler';
 import { ConflictError, NotFoundException } from '@exceptions/customException';
-import { getSafeUser } from '@utils/helpers';
-import { userModel } from '@model/UserModel';
-import { SEARCH_USER } from '../types/UserType';
+import { send204, sendSuccess } from '@utils/apiResponse';
 
 export const findSingleUser = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -27,19 +28,13 @@ export const findSingleUser = asyncHandler(
       );
     }
 
-    res.status(200).json({
-      status: 'success',
-      data: user,
-    });
+    sendSuccess<USER_PROFILE>({ res, data: user });
   },
 );
 export const getUsers = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const users = await userModel.getAllUsers();
-    res.status(200).json({
-      status: 'success',
-      data: users,
-    });
+    sendSuccess<USER_PROFILE[]>({ res, data: users });
   },
 );
 
@@ -62,10 +57,11 @@ export const createUsers = asyncHandler(async (req: Request, res: Response) => {
   }
 
   const user = await userModel.addUser(validatedData);
-
-  res.status(200).json({
-    status: 'success',
+  sendSuccess<USER_PROFILE>({
+    res,
     data: user,
+    statusCode: 201,
+    message: 'User created successfully!',
   });
 });
 
@@ -86,7 +82,7 @@ export const deleteUserByEmail = asyncHandler(
       },
     });
 
-    res.status(204).send();
+    send204(res);
   },
 );
 
@@ -106,7 +102,7 @@ export const deleteUserByMobile = asyncHandler(
       },
     });
 
-    res.status(204).send();
+    send204(res);
   },
 );
 
@@ -152,10 +148,7 @@ export const updateUsers = asyncHandler(
       },
     });
 
-    res.status(200).json({
-      status: 'success',
-      data: getSafeUser(updatedUser),
-    });
+    sendSuccess<USER_PROFILE>({ res, data: updatedUser });
   },
 );
 

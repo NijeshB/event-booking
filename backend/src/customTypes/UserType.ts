@@ -1,6 +1,12 @@
 import { User } from '@prisma/client';
+// import { getSafeUser } from '@utils/helpers';
 import { SearchUserSchema } from '@validators/userValidator';
 import { z } from 'zod';
+
+export const omitUserData = ['password', 'id'] as const;
+export type SAFEUSER = Omit<User, (typeof omitUserData)[number]>;
+
+export type USER_PROFILE = SAFEUSER | null; //ReturnType<typeof getSafeUser>;
 
 type AtLeastOne<T, Keys extends keyof T = keyof T> = Partial<T> &
   { [K in Keys]: Required<Pick<T, K>> }[Keys];

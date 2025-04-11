@@ -1,10 +1,8 @@
 import prismaClient from '@db/db';
-import { User } from '@prisma/client';
-import { omit } from 'lodash';
+import { SEARCH_USER, USER_PROFILE } from '@customTypes/UserType';
+import { T_CREATE_USER } from '@validators/userValidator';
 import { getSafeUser, getOrCondition } from '@utils/helpers';
-import { typeCreateUser } from '@validators/userValidator';
-import { SEARCH_USER } from '../types/UserType';
-import { object } from 'zod';
+
 export const userModel = {
   getAllUsers: async () => {
     return prismaClient.user
@@ -13,7 +11,9 @@ export const userModel = {
           id: 'asc',
         },
       })
-      .then((users) => users.map(getSafeUser));
+      .then(
+        (users) => users.map(getSafeUser).filter(Boolean) as USER_PROFILE[],
+      );
   },
   searchSingleUser: async (search: SEARCH_USER, useOr: Boolean = false) => {
     if (!search) {
@@ -58,7 +58,7 @@ export const userModel = {
     });
   },
 
-  addUser: async (data: typeCreateUser) => {
+  addUser: async (data: T_CREATE_USER) => {
     return prismaClient.user
       .create({
         data,

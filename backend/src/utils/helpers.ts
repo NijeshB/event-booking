@@ -1,6 +1,12 @@
 import { User } from '@prisma/client';
-import { SEARCH_USER_LIST } from '../types/UserType';
 import { omit } from 'lodash';
+
+import {
+  omitUserData,
+  SEARCH_USER_LIST,
+  USER_PROFILE,
+} from '../customTypes/UserType';
+
 //export const isProduction = process.env.NODE_ENV === 'production';
 export const isProduction =
   (process.env.NODE_ENV || '').trim().toLowerCase() === 'production';
@@ -10,8 +16,8 @@ export const isAdmin = (role: string) => {
   return role === 'admin';
 };
 
-export const getSafeUser = (user: User | null) => {
-  return user ? omit(user, ['password']) : null;
+export const getSafeUser = (user: User | null): USER_PROFILE => {
+  return user ? omit(user, omitUserData) : null;
 };
 
 export const getOrCondition = (search: SEARCH_USER_LIST) => {

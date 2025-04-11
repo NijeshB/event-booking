@@ -40,7 +40,7 @@
       "@validators/*": ["src/validators/*"],
       "@exceptions/*": ["src/exceptions/*"],
       "@controllers/*": ["src/controllers/*"],
-      "@types/*": ["src/types/*"]
+      "@customTypes/*": ["src/customTypes/*"]
     } /* Specify a set of entries that re-map imports to additional lookup locations. */,
     // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
     // "typeRoots": [],                                  /* Specify multiple folders that act like './node_modules/@types'. */
@@ -119,8 +119,8 @@
   },
   "include": ["src/**/*.ts", "alias-setup.ts"],
   "files": [
-    "src/types/express-session/index.d.ts",
-    "src/types/userHeader/index.d.ts"
+    "src/customTypes/express-session/index.d.ts",
+    "src/customTypes/userHeader/index.d.ts"
   ],
   "exclude": ["node_modules", "dist"]
 }

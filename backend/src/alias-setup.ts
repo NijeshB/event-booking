@@ -12,7 +12,8 @@ moduleAlias.addAliases({
   '@middleware': path.join(process.cwd(), baseDir, 'middleware'),
   '@db': path.join(process.cwd(), baseDir, 'db'),
   '@model': path.join(process.cwd(), baseDir, 'model'),
-  '@types': path.join(process.cwd(), baseDir, '@types'),
+  '@customTypes': path.join(process.cwd(), baseDir, 'customTypes'),
+  // '@types': path.join(process.cwd(), baseDir, 'types'),
   // Add more aliases as neenpm run ded
 });
 

@@ -1,6 +1,5 @@
 import { hashPassword } from '@utils/hash';
 import { z } from 'zod';
-
 export const createUserSchema = z.object({
   name: z.string().min(3, 'Name must be at least 3 characters'),
   email: z.string({ required_error: 'Email is mandatory!' }).trim().email({
@@ -74,5 +73,5 @@ export const SearchUserSchema = z
     },
   );
 
-export type typeCreateUser = z.infer<typeof createUserSchema>;
-export type typeUserProfile = Omit<typeCreateUser, 'password'>;
+export type T_CREATE_USER = z.infer<typeof createUserSchema>;
+export type typeUserProfile = Omit<T_CREATE_USER, 'password'>;
