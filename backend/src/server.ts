@@ -3,7 +3,10 @@ import './alias-setup'; // Must be the first import
 import express from 'express';
 import session from 'express-session';
 import dotenv from 'dotenv';
-import path from 'path';
+import * as path from 'path';
+
+//import * as path from 'node:path';
+
 import cors from 'cors';
 
 import cookieParser from 'cookie-parser'; // ✅ Import cookie-parser
@@ -16,8 +19,11 @@ import { errorHandler } from '@utils/errorHandler';
 import authRoutes from './routes/authRoutes';
 import { isProduction } from '@utils/helpers';
 import { verifyAuthToken } from '@controllers/Auth';
+import { eventRoutes } from './routes/eventRoutes';
 
-dotenv.config({ path: path.resolve(__dirname, './../.env') });
+//dotenv.config({ path: path.resolve(path.dirname, './../.env') });
+
+dotenv.config({ path: __dirname + '/../.env' });
 
 const app = express();
 
@@ -55,6 +61,7 @@ app.use(
 // });
 
 app.use('/users', verifyAuthToken, userRoutes);
+app.use('/event', eventRoutes);
 app.use('/', authRoutes);
 
 app.use(errorHandler);

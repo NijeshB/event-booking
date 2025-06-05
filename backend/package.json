@@ -5,16 +5,18 @@
   "main": "server.js",
   "scripts": {
     "clean": "rimraf dist",
-    "build": "npm run clean && tsc",
+    "build1": "npm run clean && tsc",
+    "build": "tsc",
     "start": "node -r dotenv/config ./dist/server.js",
     "start1": "nodemon --config nodemon.json tsc ./dist/server.js",
-    "predev": "npm run build",
+    "predev1": "npm run build",
     "dev": "nodemon",
+    "gp": "npx prisma generate",
     "prisma-migrate": "npx prisma migrate deploy",
     "gen-key": "node -e console.log(require('crypto').randomBytes(32).toString('hex'))",
-    "gen-img":"docker build -t event-booking-backend .",
-    "run-img":"docker run -it --env-file .env -p 3000:3000 event-booking-backend sh",
-    "test-port-win" : "netstat -ano | findStr '8080'",
+    "gen-img": "docker build -t event-booking-backend .",
+    "run-img": "docker run -it --env-file .env -p 3000:3000 event-booking-backend sh",
+    "test-port-win": "netstat -ano | findStr '8080'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "_moduleAliases1": {

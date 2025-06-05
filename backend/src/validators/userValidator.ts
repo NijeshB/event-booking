@@ -1,6 +1,5 @@
 import { hashPassword } from '@utils/hash';
 import { z } from 'zod';
-
 export const createUserSchema = z.object({
   name: z.string().min(3, 'Name must be at least 3 characters'),
   email: z.string({ required_error: 'Email is mandatory!' }).trim().email({
@@ -52,5 +51,27 @@ export const validateUserLoginSchema = z.object({
   email: emailSchema,
   password: z.string({ required_error: 'Password is mandatory!' }),
 });
-export type typeCreateUser = z.infer<typeof createUserSchema>;
-export type typeUserProfile = Omit<typeCreateUser, 'password'>;
+
+export const SearchUserSchema = z
+  .object({
+    id: z.coerce.number().optional(),
+    email: z.string().optional(),
+    mobile: z.string().optional(),
+    uuid: z.string().optional(),
+  })
+  .refine(
+    (data) => {
+      return (
+        data.id !== undefined ||
+        data.uuid !== undefined ||
+        data.email !== undefined ||
+        data.mobile !== undefined
+      );
+    },
+    {
+      message: 'Provided search criteria is not valid!',
+    },
+  );
+
+export type T_CREATE_USER = z.infer<typeof createUserSchema>;
+export type typeUserProfile = Omit<T_CREATE_USER, 'password'>;
