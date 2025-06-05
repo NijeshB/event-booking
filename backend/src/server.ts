@@ -40,7 +40,7 @@ app.use(
     methods: 'GET,POST,PUT,DELETE,OPTIONS',
     allowedHeaders: ['Content-Type', 'Authorization', 'auth-token'],
     credentials: true,
-    //maxAge: 600, // ✅ Cache preflight response for 10 minutes
+    maxAge: 600, // ✅ Cache preflight response for 10 minutes
   }),
 );
 
