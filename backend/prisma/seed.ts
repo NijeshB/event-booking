@@ -43,6 +43,8 @@ async function main() {
   } catch (e) {
     if (e instanceof ConflictError) {
       console.error('User already exists:', e.message);
+    } else {
+      console.log('Error creating user!');
     }
     //console.error('Error in seeding', e);
   }
