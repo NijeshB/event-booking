@@ -39,7 +39,7 @@ export const userModel = {
   getUsersByUUID: async (uuid: string) => {
     return prismaClient.user.findUnique({
       where: {
-        uuid,
+        uuid
       },
     });
   },

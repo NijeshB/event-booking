@@ -40,6 +40,7 @@ export const authLogin = asyncHandler(
 
 export const adminLogin = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
+    console.log("Req", req.body)
     const authLogin = validateUserLoginSchema.parse(req.body);
 
     const user = await userModel.findUsers(authLogin.email);
